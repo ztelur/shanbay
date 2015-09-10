@@ -6,12 +6,14 @@ import android.util.Log;
 
 import com.carpediem.randy.shanbay.common.ShanBayContext;
 import com.carpediem.randy.shanbay.common.ShanBayInitializer;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
  * Created by randy on 15-9-10.
  */
 public class ShanBayApplication extends Application{
     private final static String TAG = "ShanBayApplication";
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -22,7 +24,12 @@ public class ShanBayApplication extends Application{
     public void onCreate() {
         super.onCreate();
         Log.i(TAG,"initialize");
+        // database init
         ShanBayInitializer.initialize(this);
+        /**
+         * Fresco init
+         */
+        Fresco.initialize(getApplicationContext());
         Log.i(TAG,"init finished");
     }
 

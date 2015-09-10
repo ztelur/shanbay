@@ -1,5 +1,7 @@
 package com.carpediem.randy.shanbay.module.detail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,45 +10,93 @@ import android.widget.TextView;
 
 import com.carpediem.randy.shanbay.R;
 import com.carpediem.randy.shanbay.common.BaseActivity;
+import com.carpediem.randy.shanbay.common.ShanBayContext;
+import com.carpediem.randy.shanbay.common.database.entry.ArticleData;
+import com.carpediem.randy.shanbay.common.database.entry.WordData;
+import com.carpediem.randy.shanbay.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.carpediem.randy.shanbay.common.ShanbayConfig.DETAILACTIVITY_BUNDLE_DATA;
+import static com.carpediem.randy.shanbay.common.ShanbayConfig.DETAILACTIVITY_EXTRA;
 /**
  * Created by randy on 15-9-10.
  */
 public class DetailActivity extends BaseActivity{
+    private final static String TAG = "DetailActivity";
+    private String testUrl  = "http://7xjsjy.com1.z0.glb.clouddn.com/2009720142913830.jpg";
+
+    /**
+     * UI component
+     */
     private TextView mTitle;
     private SimpleDraweeView mImage;
     private TextView mContent;
+
+
+    /**
+     * data
+     */
+    private ArticleData mData;
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        initView();
+        findView();
         initData();
+        initView();
+        testDatabase();
     }
 
     /**
      * 初始化数据
      */
     private void initData() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra(DETAILACTIVITY_EXTRA);
+        setData(new ArticleData());
+
+
+        // init ImageView;
 
     }
+
+
 
     /**
      * 初始化界面组件
      */
-    private void initView() {
+    private void findView() {
         mTitle = (TextView)findViewById(R.id.article_title);
         mImage = (SimpleDraweeView)findViewById(R.id.simpleView);
        mContent = (TextView)findViewById(R.id.content);
 
     }
 
+    private void initView() {
+        mTitle.setText("Why are legends handed down by storytellers useful?");
+        // 获得文本文件
+        Uri uri = Uri.parse(testUrl);
+        if (mImage != null) {
+            mImage.setImageURI(uri);
+        }
+        mContent.setText(" We can read of things that happened 5,000 years ago in the Near East, where people first learned to write. But there are some parts of the word where even now people cannot write. The only way that they can preserve their history is to recount it as sagas -- legends handed down from one generation of another. These legends are useful because they can tell us something about migrations of people who lived long ago, but none could write down what they did. Anthropologists wondered where the remote ancestors of the Polynesian peoples now living in the Pacific Islands came from. The sagas of these people explain that some of them came from Indonesia about 2,000 years ago.\n" +
+                "    But the first people who were like ourselves lived so long ago that even their sagas, if they had any, are forgotten. So archaeologists have neither history nor legends to help them to find out where the first 'modern men' came from.\n" +
+                "    Fortunately, however, ancient men made tools of stone, especially flint, because this is easier to shape than other kinds. They may also have used wood and skins, but these have rotted away. Stone does not decay, and so the tools of long ago have remained when even the bones of the men who made them have disappeared without trace.\n" +
+                "                              ROBIN PLACE Finding fossil man");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
@@ -65,5 +115,61 @@ public class DetailActivity extends BaseActivity{
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // ========================== data 相关  =======================================
+    public void setData(ArticleData data) {
+        if (data == null) {
+            throw new IllegalArgumentException(TAG+" setData data is null");
+        }
+        this.mData = data;
+    }
+
+    public void testDatabase() {
+        LogUtil.d(TAG,"save article");
+        ShanBayContext.getArticleDbService().saveArticleList(getTestData());
+        List<ArticleData> datas = ShanBayContext.getArticleDbService().getArticleList();
+        if (datas == null) {
+            return;
+        }
+        for(ArticleData data : datas) {
+            LogUtil.d(TAG,"the data is "+data.getId()+data.getPath()+data.getTitle()+data.getUrl());
+        }
+
+        LogUtil.d(TAG,"save word");
+
+        ShanBayContext.getWordDbService().saveDatas(getWordData());
+
+        List<WordData> datas2 = ShanBayContext.getWordDbService().getDatas();
+        if (datas2 == null) {
+            return;
+        }
+        for(WordData data : datas2) {
+            LogUtil.d(TAG,"the word is "+data.getWord()+" "+data.getLevel());
+        }
+
+    }
+    private List<WordData> getWordData() {
+        List<WordData> datas = new ArrayList<WordData>();
+        for (int i=0;i<10;i++) {
+            WordData data = new WordData();
+            data.setLevel(i % 3);
+            data.setWord(String.valueOf(i));
+            datas.add(data);
+        }
+        return datas;
+    }
+    private List<ArticleData> getTestData() {
+        List<ArticleData> datas = new ArrayList<ArticleData>();
+        for(int i=0;i<10;i++) {
+            ArticleData data = new ArticleData();
+            String any = String.valueOf(i);
+            data.setId(any);
+            data.setUrl(any);
+            data.setPath(any);
+            data.setTitle(any);
+            datas.add(data);
+        }
+        return datas;
     }
 }

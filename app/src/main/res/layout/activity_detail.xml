@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/application_default_background_color"
     >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/activity_detail_article_title_size"
+                android:textColor="@color/activity_detail_title_color"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:id="@+id/article_title"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/activity_detail_article_title_size"
-        android:textColor="@color/activity_detail_title_color"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/article_title"
-        />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id = "@+id/simpleView"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_below = "@id/article_title"
+                android:background="@drawable/ic_launcher"
+                />
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id = "@+id/simpleView"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:layout_below = "@id/article_title"
-        />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/content"
-            android:layout_below="@id/simpleView"
-    />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/content"
+                android:layout_below="@id/simpleView"
+                />
+            </RelativeLayout>
+        </ScrollView>
 </RelativeLayout>

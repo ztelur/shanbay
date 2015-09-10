@@ -34,11 +34,20 @@ public class ShanBayContext {
         return sApplication.get();
     }
 
+    // ================================ Context =====================================
+
+    public static Context getContext() {
+
+        return getApplication().getApplicationContext();
+    }
+
+
+
     // =============================== ArticleDbService =============================
     private final static Singleton<ArticleDbService,Void> sArticleDbService = new Singleton<ArticleDbService, Void>() {
         @Override
         protected ArticleDbService create(Void aVoid) {
-            return new ArticleDbService();
+            return new ArticleDbService(getContext());
         }
     };
 
@@ -50,7 +59,7 @@ public class ShanBayContext {
     private final static Singleton<WordDbService,Void> sWordDbService = new Singleton<WordDbService, Void>() {
         @Override
         protected WordDbService create(Void aVoid) {
-            return new WordDbService();
+            return new WordDbService(getContext());
         }
     };
 
