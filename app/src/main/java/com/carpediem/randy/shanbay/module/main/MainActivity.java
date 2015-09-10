@@ -1,12 +1,15 @@
-package com.carpediem.randy.shanbay;
+package com.carpediem.randy.shanbay.module.main;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.carpediem.randy.shanbay.R;
+import com.carpediem.randy.shanbay.common.BaseActivity;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
