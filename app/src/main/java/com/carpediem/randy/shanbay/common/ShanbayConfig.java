@@ -31,6 +31,9 @@ public class ShanbayConfig {
         return DATABASE_NAME;
     }
 
+    public static final String ROOT_PATH = ""; //网络下载文件保存的位置
+
+    // ============================ 加密 =============================================
     /**
      * 文件加密的秘钥
      */
