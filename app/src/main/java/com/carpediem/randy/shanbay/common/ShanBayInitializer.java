@@ -3,6 +3,7 @@ package com.carpediem.randy.shanbay.common;
 import android.app.Application;
 
 import com.carpediem.randy.shanbay.common.initalizer.DbCacheInitalizer;
+import com.carpediem.randy.shanbay.common.initalizer.TestInitalizer;
 import com.carpediem.randy.shanbay.utils.ProcessUtil;
 
 /**
@@ -22,6 +23,6 @@ public class ShanBayInitializer {
         if (isMainProcess) {
 //            DbCacheInitalizer
         }
-
+        TestInitalizer.initalize();
     }
 }

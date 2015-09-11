@@ -12,7 +12,10 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -21,6 +24,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:id="@+id/article_title"
+                android:layout_centerHorizontal="true"
+
                 />
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -29,6 +34,8 @@
                 android:layout_height = "wrap_content"
                 android:layout_below = "@id/article_title"
                 android:background="@drawable/ic_launcher"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 />
 
             <TextView
@@ -36,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/content"
                 android:layout_below="@id/simpleView"
+                android:textSize="@dimen/activity_detail_content_font_size"
                 />
             </RelativeLayout>
         </ScrollView>

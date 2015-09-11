@@ -208,7 +208,7 @@ public class DbManager<T extends DbCacheData> {
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ");
         sql.append(mTable);
-        sql.append("(");
+        sql.append(" (");
 
         int i = 0;
         for (DbCacheData.Structure structure : mStrutureList) {
@@ -221,7 +221,7 @@ public class DbManager<T extends DbCacheData> {
             i++;
         }
         sql.append(")");
-        sql.append("VALUES (");
+        sql.append(" VALUES (");
 
         for(i=0;i< mStrutureList.size();i++) {
             sql.append((i >0) ? ",?" : "?");

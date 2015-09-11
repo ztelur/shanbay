@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="application_default_background_color">#FFFFFF</color>
+    <color name="application_default_background_color">#C0C0C0</color>
     <color name="activity_detail_title_color">#000000</color>
     <color name="activity_detail_content_text_color">#000000</color>
-    
+
+    <color name="dark_green">#009966</color>
+
+    <color name="listview_default_background">#FFFFFF</color>
 </resources>

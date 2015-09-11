@@ -52,7 +52,6 @@ public class DetailActivity extends BaseActivity{
         findView();
         initData();
         initView();
-        testDatabase();
     }
 
     /**
@@ -60,9 +59,9 @@ public class DetailActivity extends BaseActivity{
      */
     private void initData() {
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra(DETAILACTIVITY_EXTRA);
-        setData(new ArticleData());
-
+        if (intent != null) {
+            mData = intent.getParcelableExtra(DETAILACTIVITY_EXTRA);
+        }
 
         // init ImageView;
 
@@ -81,9 +80,12 @@ public class DetailActivity extends BaseActivity{
     }
 
     private void initView() {
-        mTitle.setText("Why are legends handed down by storytellers useful?");
+        if (mData == null) {
+            return;
+        }
+        mTitle.setText(mData.getTitle());
         // 获得文本文件
-        Uri uri = Uri.parse(testUrl);
+        Uri uri = Uri.parse(mData.getUrl());
         if (mImage != null) {
             mImage.setImageURI(uri);
         }
@@ -123,53 +125,5 @@ public class DetailActivity extends BaseActivity{
             throw new IllegalArgumentException(TAG+" setData data is null");
         }
         this.mData = data;
-    }
-
-    public void testDatabase() {
-        LogUtil.d(TAG,"save article");
-        ShanBayContext.getArticleDbService().saveArticleList(getTestData());
-        List<ArticleData> datas = ShanBayContext.getArticleDbService().getArticleList();
-        if (datas == null) {
-            return;
-        }
-        for(ArticleData data : datas) {
-            LogUtil.d(TAG,"the data is "+data.getId()+data.getPath()+data.getTitle()+data.getUrl());
-        }
-
-        LogUtil.d(TAG,"save word");
-
-        ShanBayContext.getWordDbService().saveDatas(getWordData());
-
-        List<WordData> datas2 = ShanBayContext.getWordDbService().getDatas();
-        if (datas2 == null) {
-            return;
-        }
-        for(WordData data : datas2) {
-            LogUtil.d(TAG,"the word is "+data.getWord()+" "+data.getLevel());
-        }
-
-    }
-    private List<WordData> getWordData() {
-        List<WordData> datas = new ArrayList<WordData>();
-        for (int i=0;i<10;i++) {
-            WordData data = new WordData();
-            data.setLevel(i % 3);
-            data.setWord(String.valueOf(i));
-            datas.add(data);
-        }
-        return datas;
-    }
-    private List<ArticleData> getTestData() {
-        List<ArticleData> datas = new ArrayList<ArticleData>();
-        for(int i=0;i<10;i++) {
-            ArticleData data = new ArticleData();
-            String any = String.valueOf(i);
-            data.setId(any);
-            data.setUrl(any);
-            data.setPath(any);
-            data.setTitle(any);
-            datas.add(data);
-        }
-        return datas;
     }
 }

@@ -5,4 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
     <string name="action_select">筛选</string>
+
+    <string name="mainactivity_done_tag_text">( 已读 )</string>
 </resources>

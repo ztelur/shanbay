@@ -1,26 +1,36 @@
 package com.carpediem.randy.shanbay.module.main;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.carpediem.randy.shanbay.R;
 import com.carpediem.randy.shanbay.common.BaseActivity;
+import com.carpediem.randy.shanbay.common.ShanBayContext;
+import com.carpediem.randy.shanbay.common.ShanbayConfig;
 import com.carpediem.randy.shanbay.common.database.entry.ArticleData;
+import com.carpediem.randy.shanbay.common.database.entry.WordData;
+import com.carpediem.randy.shanbay.module.detail.DetailActivity;
+import com.carpediem.randy.shanbay.utils.ArticleNumUtil;
+import com.carpediem.randy.shanbay.utils.LogUtil;
 import com.carpediem.randy.shanbay.widget.banner.BannerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity {
-
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener{
+    private final static String TAG = "MainActivity";
     /**
      * 界面ＵＩ
      */
@@ -28,10 +38,11 @@ public class MainActivity extends BaseActivity {
     private BannerView mBanner;
     private ListView mListView;
 
+    private ArticleAdapter mAdapter;
     /**
      * 数据
      */
-    private List<ArticleData> dataList = new ArrayList<ArticleData>();
+    private List<ArticleData> mDataList = new ArrayList<ArticleData>();
 
 
     /**
@@ -41,8 +52,26 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findView();
+        initData();
+        initView();
     }
 
+    private void findView() {
+        mListView = (ListView)findViewById(R.id.listview);
+    }
+    private void initData() {
+        mDataList = ShanBayContext.getArticleDbService().getArticleList();
+    }
+
+    private void initView() {
+        mAdapter = new ArticleAdapter(this,mDataList);
+        if (mListView != null) {
+            mListView.setAdapter(mAdapter);
+            mListView.setOnItemClickListener(this);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,25 +97,21 @@ public class MainActivity extends BaseActivity {
 
     // ============================== test function ==================================
 
-    private List<ArticleData> getTestData() {
-        List<ArticleData> datas = new ArrayList<ArticleData>();
-        for(int i=0;i<10;i++) {
-            ArticleData data = new ArticleData();
-            String any = String.valueOf(i);
-            data.setId(any);
-            data.setUrl(any);
-            data.setPath(any);
-            data.setTitle(any);
-        }
-        return datas;
-    }
 
+
+    // =========================== adapter  ====================================
     private class ArticleAdapter extends BaseAdapter {
+        private List<ArticleData> adapterDataList;
+        private LayoutInflater mLayoutInflater;
 
+        public ArticleAdapter (Context context , List<ArticleData> dataList1) {
+            this.adapterDataList = dataList1;
+            mLayoutInflater = LayoutInflater.from(context);
+        }
 
         @Override
         public int getCount() {
-            return dataList.size();
+            return adapterDataList.size();
         }
 
         @Override
@@ -101,11 +126,51 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+            ViewHolder viewHolder;
 
-            return null;
+            if (view == null || ! (view.getTag() instanceof ViewHolder)) {
+                viewHolder = new ViewHolder();
+                view = mLayoutInflater.inflate(R.layout.listview_item,viewGroup,false);
+                viewHolder.mTitle = (TextView)view.findViewById(R.id.course_title);
+                viewHolder.mDone = (TextView)view.findViewById(R.id.done_tag);
+            } else {
+                viewHolder = (ViewHolder)view.getTag();
+            }
+
+            // 初始化ＵＩ
+            ArticleData data = adapterDataList.get(i);
+            if (viewHolder.mTitle != null) {
+                //TODO: titleUtil转换
+                viewHolder.mTitle.setText(ArticleNumUtil.dataStrToTextStr(data.getId()));
+            }
+            if (viewHolder.mDone != null) {
+                if (data.isRead()) {
+                    viewHolder.mDone.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.mDone.setVisibility(View.GONE);
+                }
+            }
+
+            return view;
         }
     }
     private class ViewHolder {
         TextView mTitle;
+        TextView mDone; //已经读过的标志
+    }
+
+    // ====================== onItemClickListener ==================================
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (mAdapter == null || mDataList.size() < i) {
+            return;
+        }
+        ArticleData data = mDataList.get(i);
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(ShanbayConfig.DETAILACTIVITY_EXTRA,data);
+        startActivity(intent);
     }
 }
+

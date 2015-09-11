@@ -51,12 +51,26 @@ public class WordData implements Parcelable,DbCacheData{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeString(word);
+        parcel.writeInt(level);
     }
 
+    public static final Creator<WordData> CREATOR = new Creator<WordData>() {
+        @Override
+        public WordData createFromParcel(Parcel parcel) {
+            WordData data = new WordData();
+            data.setWord(parcel.readString());
+            data.setLevel(parcel.readInt());
+            return data;
+        }
 
-    // ================================== dbCacheData ===================================
-    @Override
+        @Override
+        public WordData[] newArray(int i) {
+            return new WordData[i];
+        }
+    };
+
+    // =============================== database ===================================
     public void writeTo(ContentValues contentValues) {
         contentValues.put(WORD,word);
         contentValues.put(LEVEL,level);
