@@ -1,6 +1,7 @@
 package com.carpediem.randy.shanbay.utils;
 
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.text.TextUtils;
 
 import com.carpediem.randy.shanbay.common.ShanBayContext;
@@ -28,10 +29,11 @@ public class FileUtil {
 
         String res = "";
         try {
+
             AssetManager am = ShanBayContext.getContext().getAssets();
             InputStream inputStream = am.open(num);
             // 解码
-            String content = SecurityUtil.doDecryptFile(inputStream);
+            String content = SecurityUtil.doDecryptFile1(inputStream);
             if (content == null) {
                 throw new RuntimeException(TAG+" :"+"decrypt failed");
             }

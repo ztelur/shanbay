@@ -62,7 +62,11 @@ public class DetailActivity extends BaseActivity{
         Intent intent = getIntent();
         if (intent != null) {
             mData = intent.getParcelableExtra(DETAILACTIVITY_EXTRA);
-            mContentText = FileUtil.readStringFromPath(mData.getId());
+            if (mData.getId().equalsIgnoreCase("1")) {
+                mContentText = FileUtil.readStringFromPath("1_1");
+            } else {
+                mContentText = FileUtil.readStringFromPath("1_2");
+            }
         }
 
 

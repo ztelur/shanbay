@@ -95,4 +95,32 @@ public class SecurityUtil {
         }
         return sb.toString();
     }
+    /**
+     * 解密文件
+     * @param in
+     */
+    public static String doDecryptFile1(InputStream in) {
+        if(in == null) {
+                 throw new IllegalArgumentException("doDecryFile inputsream is null");
+        }
+        try {
+            CipherInputStream cin = new CipherInputStream(in, ShanbayConfig.DECRYPTCIPHER);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(cin)) ;
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            reader.close();
+            cin.close();
+            // in 在外侧关闭
+            LogUtil.i(TAG,"parse success");
+            return sb.toString();
+        } catch (Exception e) {
+            LogUtil.i(TAG,"parse faild");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

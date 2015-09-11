@@ -40,7 +40,7 @@ public class ShanbayConfig {
     public static  Key KEY;
     public static  Cipher DECRYPTCIPHER; //解密的秘钥
     public static  Cipher ENCRYPTCIPHER; // 加密的秘钥
-    private static final String KEYRULE = "SHANBAY1234";
+    private static final String KEYRULE = "shanbayDEMO";
     /**
      * 初始化文件加密数据
      */

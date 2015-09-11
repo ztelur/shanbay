@@ -9,7 +9,7 @@ import org.json.JSONObject;
  * Created by randy on 15-9-11.
  */
 public class JsonUtil {
-    private static final String TAG = "GsonUtil";
+    private static final String TAG = "JsonUtil";
     /**
      * 解析 json数据格式
      * @param data 从文件中读取的string

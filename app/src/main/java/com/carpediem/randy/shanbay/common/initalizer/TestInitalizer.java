@@ -3,6 +3,7 @@ package com.carpediem.randy.shanbay.common.initalizer;
 import com.carpediem.randy.shanbay.common.ShanBayContext;
 import com.carpediem.randy.shanbay.common.database.entry.ArticleData;
 import com.carpediem.randy.shanbay.common.database.entry.WordData;
+import com.carpediem.randy.shanbay.utils.FileUtil;
 import com.carpediem.randy.shanbay.utils.LogUtil;
 
 import java.util.ArrayList;
@@ -14,7 +15,13 @@ import java.util.List;
 public class TestInitalizer {
     private final static String TAG = "TestInitalizer";
     public static void initalize() {
-        testDatabase();
+//        testDatabase();
+        //测试加密和json
+        FileUtil.readStringFromPath("1_1");
+        FileUtil.readStringFromPath("1_2");
+        FileUtil.readStringFromPath("1_2");
+        FileUtil.readStringFromPath("1_2");
+
     }
     private static void testDatabase() {
             LogUtil.d(TAG, "save article");
