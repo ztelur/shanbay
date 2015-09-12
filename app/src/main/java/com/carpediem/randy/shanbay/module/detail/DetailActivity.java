@@ -155,28 +155,6 @@ public class DetailActivity extends BaseActivity{
         }
     }
 
-    /**
-     * 展示筛选等级的对话框
-     */
-    private void showSelectDialog() {
-        LogUtil.i(TAG,"showSelectDialog");
+   
 
-        List<MenuItemInfo> menuItemInfos = getMenuInfo();
-        
-    }
-    private List<MenuItemInfo> getMenuInfo() {
-        List<MenuItemInfo> menuItemInfos = new ArrayList<MenuItemInfo>();
-        menuItemInfos.add(new MenuItemInfo("Level 1",1));
-        menuItemInfos.add(new MenuItemInfo("Level 2",2));
-        menuItemInfos.add(new MenuItemInfo("Level 3",3));
-        return menuItemInfos;
-    }
-    class static class MenuItemInfo {
-        public String desc ;
-        public int level;
-        public MenuItemInfo(String desc,int level) {
-            this.desc =desc;
-            this.level = level;
-        }
-    }
 }
