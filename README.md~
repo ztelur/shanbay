@@ -17,4 +17,8 @@
 	     -utils
 	     -widget
 	-res
-	
+
+## libs
+	- fresco
+	- support-cardview-v7
+
