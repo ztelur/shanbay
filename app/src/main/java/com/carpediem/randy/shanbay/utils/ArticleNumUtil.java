@@ -7,7 +7,7 @@ package com.carpediem.randy.shanbay.utils;
 public class ArticleNumUtil {
     public static String dataStrToTextStr(String data) {
         StringBuilder sb = new StringBuilder("Unit ");
-        String[] strings = data.split("-");
+        String[] strings = data.split("_");
         if (strings.length == 1) { //没有-分割,为了匹配测试数据，默认作为unit
             sb.append(data);
             return sb.toString();

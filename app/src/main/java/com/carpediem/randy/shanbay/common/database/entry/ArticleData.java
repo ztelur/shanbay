@@ -33,9 +33,18 @@ public class ArticleData implements Parcelable,DbCacheData{
     private String path; //文章内容存储位置
     private String url; //图片url
     private boolean isRead;
+    private String content;
 
     // ============================ getter and setter ====================================
 
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getId() {
         return id;

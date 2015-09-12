@@ -1,8 +1,11 @@
 package com.carpediem.randy.shanbay.module.detail;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -13,7 +16,9 @@ import com.carpediem.randy.shanbay.common.BaseActivity;
 import com.carpediem.randy.shanbay.common.ShanBayContext;
 import com.carpediem.randy.shanbay.common.database.entry.ArticleData;
 import com.carpediem.randy.shanbay.common.database.entry.WordData;
+import com.carpediem.randy.shanbay.module.detail.business.ContentModel;
 import com.carpediem.randy.shanbay.utils.FileUtil;
+import com.carpediem.randy.shanbay.utils.LevelUtil;
 import com.carpediem.randy.shanbay.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -41,7 +46,8 @@ public class DetailActivity extends BaseActivity{
      * data
      */
     private ArticleData mData; //文章的属性等一堆数据
-    private String mContentText; //文章的内容
+    private Spannable mContentText; //文章的内容
+    private String mRawContent;
     /**
      *
      * @param savedInstanceState
@@ -62,13 +68,12 @@ public class DetailActivity extends BaseActivity{
         Intent intent = getIntent();
         if (intent != null) {
             mData = intent.getParcelableExtra(DETAILACTIVITY_EXTRA);
-            if (mData.getId().equalsIgnoreCase("1")) {
-                mContentText = FileUtil.readStringFromPath("1_1");
-            } else {
-                mContentText = FileUtil.readStringFromPath("1_2");
-            }
-        }
 
+        }
+        if (mData != null) {
+            mRawContent  = FileUtil.readStringFromPath(mData.getId());
+            mContentText = ContentModel.getSpannableString(mRawContent,3);
+        }
 
         // init ImageView;
 
@@ -115,7 +120,7 @@ public class DetailActivity extends BaseActivity{
 
         // 高亮筛选
         if (id == R.id.action_select) {
-
+            highlightLevel(1);
             return true;
         }
 
@@ -129,5 +134,49 @@ public class DetailActivity extends BaseActivity{
             throw new IllegalArgumentException(TAG+" setData data is null");
         }
         this.mData = data;
+    }
+
+    // ============================ 高亮文字 ======================================
+
+    /**
+     * UI 线程 高亮文字
+     * @param level
+     */
+    private void highlightLevel(int level) {
+        if (LevelUtil.isBeyondLevelRange(level)) {
+            throw new IllegalArgumentException(TAG+"highlight at level "+level);
+        }
+        if (TextUtils.isEmpty(mRawContent) ) {
+            throw new RuntimeException(TAG+"hightlight  rawcontent is null");
+        }
+        mContentText = ContentModel.getSpannableString(mRawContent,level);
+        if (mContent != null) {
+            mContent.setText(mContentText);
+        }
+    }
+
+    /**
+     * 展示筛选等级的对话框
+     */
+    private void showSelectDialog() {
+        LogUtil.i(TAG,"showSelectDialog");
+
+        List<MenuItemInfo> menuItemInfos = getMenuInfo();
+        
+    }
+    private List<MenuItemInfo> getMenuInfo() {
+        List<MenuItemInfo> menuItemInfos = new ArrayList<MenuItemInfo>();
+        menuItemInfos.add(new MenuItemInfo("Level 1",1));
+        menuItemInfos.add(new MenuItemInfo("Level 2",2));
+        menuItemInfos.add(new MenuItemInfo("Level 3",3));
+        return menuItemInfos;
+    }
+    class static class MenuItemInfo {
+        public String desc ;
+        public int level;
+        public MenuItemInfo(String desc,int level) {
+            this.desc =desc;
+            this.level = level;
+        }
     }
 }

@@ -1,9 +1,10 @@
 package com.carpediem.randy.shanbay.module.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,11 +20,11 @@ import com.carpediem.randy.shanbay.common.BaseActivity;
 import com.carpediem.randy.shanbay.common.ShanBayContext;
 import com.carpediem.randy.shanbay.common.ShanbayConfig;
 import com.carpediem.randy.shanbay.common.database.entry.ArticleData;
-import com.carpediem.randy.shanbay.common.database.entry.WordData;
 import com.carpediem.randy.shanbay.module.detail.DetailActivity;
 import com.carpediem.randy.shanbay.utils.ArticleNumUtil;
-import com.carpediem.randy.shanbay.utils.LogUtil;
+import com.carpediem.randy.shanbay.utils.FileUtil;
 import com.carpediem.randy.shanbay.widget.banner.BannerView;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +133,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 viewHolder = new ViewHolder();
                 view = mLayoutInflater.inflate(R.layout.listview_item,viewGroup,false);
                 viewHolder.mTitle = (TextView)view.findViewById(R.id.course_title);
-                viewHolder.mDone = (TextView)view.findViewById(R.id.done_tag);
+                viewHolder.mContent = (TextView)view.findViewById(R.id.content);
+                viewHolder.mCardView = (CardView)view.findViewById(R.id.card_view);
+                viewHolder.mDraweeView = (SimpleDraweeView)view.findViewById(R.id.simpleView);
             } else {
                 viewHolder = (ViewHolder)view.getTag();
             }
@@ -141,22 +144,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             ArticleData data = adapterDataList.get(i);
             if (viewHolder.mTitle != null) {
                 //TODO: titleUtil转换
-                viewHolder.mTitle.setText(ArticleNumUtil.dataStrToTextStr(data.getId()));
+//                viewHolder.mTitle.setText(ArticleNumUtil.dataStrToTextStr(data.getId()));
+                viewHolder.mTitle.setText(data.getTitle());
             }
-            if (viewHolder.mDone != null) {
-                if (data.isRead()) {
-                    viewHolder.mDone.setVisibility(View.VISIBLE);
-                } else {
-                    viewHolder.mDone.setVisibility(View.GONE);
-                }
+            if (viewHolder.mContent != null) {
+                String content = FileUtil.readStringFromPath(data.getId());
+                viewHolder.mContent.setText(content);
+            }
+            if (viewHolder.mDraweeView != null) {
+                Uri uri = Uri.parse(data.getUrl());
+                viewHolder.mDraweeView.setImageURI(uri);
             }
 
             return view;
         }
     }
     private class ViewHolder {
-        TextView mTitle;
-        TextView mDone; //已经读过的标志
+        TextView mTitle;  //unit 1 lesson 1
+        TextView mContent; //已经读过的标志
+        CardView mCardView;
+        SimpleDraweeView mDraweeView;
     }
 
     // ====================== onItemClickListener ==================================
