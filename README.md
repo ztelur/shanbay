@@ -1,7 +1,7 @@
 # shanbay
 
 ## main
-	please read the doc file for detail information. By the way it's in Chinese
+	please read the ShanBayDemo pdf file for detail information. By the way it's in Chinese
 
 ## project structure
 
@@ -10,7 +10,6 @@
    - build
    - libs
    - src
-
 	-java
 	     - common
 		- database

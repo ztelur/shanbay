@@ -18,13 +18,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by randy on 15-9-12.
  */
 public class ContentModel {
     private final static String TAG = "ContentModel";
-
+    private final static String REGEX = "\\p{P}"; //有符号
     /**
      * 获得高亮文字
      * @param data
@@ -46,18 +47,30 @@ public class ContentModel {
         if (wordmap == null || wordmap.isEmpty()) {
             throw new RuntimeException(TAG+"wordmap is null or empty");
         }
+        // 匹配英语单词的正则表达式
+        Pattern pattern = Pattern.compile(REGEX);
+
         // spannable builder
         SpannableStringBuilder sb = new SpannableStringBuilder("   "); //开头的空格
         for( String str: list) {
-            SpannableString spannableString = new SpannableString(str);
-            if (wordmap.containsKey(str)) {  //没有找到，所以就不用高亮
+            String realStr = str;
+            boolean hasDot = false;
+            if (pattern.matcher(str).find()) { //如果找到了符号
+                realStr = str.substring(0,str.length() -1);
+                hasDot = true;
+            }
+            SpannableString spannableString = new SpannableString(realStr);
+            if (wordmap.containsKey(realStr)) {  //没有找到，所以就不用高亮
 
                 spannableString.setSpan(new ForegroundColorSpan(Color.BLUE)
-                                    ,0,str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                    ,0,realStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            sb.append(spannableString);
-            sb.append(" ");
 
+            sb.append(spannableString);
+            if (hasDot) {
+                sb.append(str.charAt(str.length()-1)); //最后一位的标点
+            }
+            sb.append(" ");
         }
 
         return sb;
