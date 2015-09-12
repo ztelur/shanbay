@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -23,9 +24,11 @@ import com.carpediem.randy.shanbay.common.database.entry.ArticleData;
 import com.carpediem.randy.shanbay.module.detail.DetailActivity;
 import com.carpediem.randy.shanbay.utils.ArticleNumUtil;
 import com.carpediem.randy.shanbay.utils.FileUtil;
+import com.carpediem.randy.shanbay.utils.LogUtil;
 import com.carpediem.randy.shanbay.widget.banner.BannerView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +59,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         findView();
         initData();
         initView();
+        makeActionOverflowMenuHide();
     }
 
     private void findView() {
@@ -178,6 +182,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra(ShanbayConfig.DETAILACTIVITY_EXTRA,data);
         startActivity(intent);
+    }
+
+
+    // =========================== actionbar ======================================
+    // ============================= actionbar =====================================
+
+    private void makeActionOverflowMenuHide() {
+        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, true);
+            }
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getLocalizedMessage());
+        }
     }
 }
 
