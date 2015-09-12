@@ -143,7 +143,7 @@ public class DetailActivity extends BaseActivity{
                 level = 5;
                 break;
             default:
-                throw new RuntimeException(TAG);
+                // do nothing
         }
         if (level != -1) {
             highlightLevel(level);
