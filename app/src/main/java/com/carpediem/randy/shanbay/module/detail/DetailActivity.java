@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,7 +80,8 @@ public class DetailActivity extends BaseActivity{
         }
         if (mData != null) {
             mRawContent  = FileUtil.readStringFromPath(mData.getId());
-            mContentText = ContentModel.getSpannableString(mRawContent,3);
+//            mContentText = ContentModel.getSpannableString(mRawContent,3);
+            mContentText = new SpannableString(mRawContent);
         }
 
         // init ImageView;

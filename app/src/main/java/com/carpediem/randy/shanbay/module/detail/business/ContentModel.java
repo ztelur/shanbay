@@ -51,7 +51,7 @@ public class ContentModel {
         Pattern pattern = Pattern.compile(REGEX);
 
         // spannable builder
-        SpannableStringBuilder sb = new SpannableStringBuilder("   "); //开头的空格
+        SpannableStringBuilder sb = new SpannableStringBuilder(""); //开头的空格
         for( String str: list) {
             String realStr = str;
             boolean hasDot = false;
