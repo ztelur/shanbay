@@ -1,5 +1,6 @@
 package com.carpediem.randy.shanbay.module.detail;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import com.carpediem.randy.shanbay.utils.LevelUtil;
 import com.carpediem.randy.shanbay.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,10 @@ public class DetailActivity extends BaseActivity{
         findView();
         initData();
         initView();
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        makeActionOverflowMenuShown();
     }
 
     /**
@@ -117,13 +124,30 @@ public class DetailActivity extends BaseActivity{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        int level = -1;
         // 高亮筛选
-        if (id == R.id.action_select) {
-            highlightLevel(1);
-            return true;
+        switch (id) {
+            case R.id.level_one:
+                level = 1;
+                break;
+            case R.id.level_two:
+                level = 2;
+                break;
+            case R.id.level_three:
+                level = 3;
+                break;
+            case R.id.level_four:
+                level = 4;
+                break;
+            case R.id.level_five:
+                level = 5;
+                break;
+            default:
+                throw new RuntimeException(TAG);
         }
-
+        if (level != -1) {
+            highlightLevel(level);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -143,6 +167,7 @@ public class DetailActivity extends BaseActivity{
      * @param level
      */
     private void highlightLevel(int level) {
+
         if (LevelUtil.isBeyondLevelRange(level)) {
             throw new IllegalArgumentException(TAG+"highlight at level "+level);
         }
@@ -150,11 +175,26 @@ public class DetailActivity extends BaseActivity{
             throw new RuntimeException(TAG+"hightlight  rawcontent is null");
         }
         mContentText = ContentModel.getSpannableString(mRawContent,level);
+
         if (mContent != null) {
             mContent.setText(mContentText);
         }
     }
 
-   
+    // ============================= actionbar =====================================
+
+    private void makeActionOverflowMenuShown() {
+        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getLocalizedMessage());
+        }
+    }
 
 }

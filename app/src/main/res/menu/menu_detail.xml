@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_select" android:title="@string/action_select"
-        android:orderInCategory="100" android:showAsAction="ifRoom" />
-
+    <item android:id="@+id/level_one" android:title="@string/level_one"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/level_two" android:title="@string/level_two"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/level_three" android:title="@string/level_three"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/level_four" android:title="@string/level_four"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/level_five" android:title="@string/level_five"
+        android:orderInCategory="100" android:showAsAction="never" />
 </menu>

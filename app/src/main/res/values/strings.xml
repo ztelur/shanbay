@@ -7,4 +7,11 @@
     <string name="action_select">筛选</string>
 
     <string name="mainactivity_done_tag_text">( 已读 )</string>
+
+    <string name="level_one">Level one</string>
+    <string name="level_two">Level two</string>
+    <string name="level_three">Level three</string>
+    <string name="level_four">Level four</string>
+    <string name="level_five">Level five</string>
+
 </resources>

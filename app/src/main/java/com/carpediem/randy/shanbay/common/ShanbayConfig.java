@@ -62,8 +62,11 @@ public class ShanbayConfig {
 
     }
 
-    // 第一次运行初始化
+    //  =====================第一次运行初始化 ====================================
     public static final String PREFS_NAME = "prefs_data";
     public static final String FIRST_RUN = "first_run";
     public static final int FIRST_RUN_NUM = 1;
+
+    // ========================= level ============================================
+    public static final int LEVEL_MAX = 5;
 }
